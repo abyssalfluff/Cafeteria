@@ -19,6 +19,12 @@ namespace Cafeteria.Controllers
         {
             return View(db.Productos.ToList());
         }
+        public ActionResult PorDetalleProducto(string nombreBuscar)
+        {
+            var busca = db.Productos.Where(curso => curso.Nombre.Contains(nombreBuscar)).ToList();
+            return View("Index", busca);
+        }
+
 
         // GET: Productos/Details/5
         public ActionResult Details(int? id)
@@ -110,18 +116,25 @@ namespace Cafeteria.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Producto producto = db.Productos.Find(id);
+
+            if (producto == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Eliminar relaciones en Productos_Pedido
+            var relacionesPedido = db.Productos_Pedido.Where(p => p.Id_Producto == producto.Id_Producto);
+            db.Productos_Pedido.RemoveRange(relacionesPedido);
+
+            // Eliminar relaciones en Informe (si existen)
+            var relacionesInforme = db.Informes.Where(i => i.Id_Producto == producto.Id_Producto);
+            db.Informes.RemoveRange(relacionesInforme);
+
+            // Eliminar producto
             db.Productos.Remove(producto);
             db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,15 +1,37 @@
 ﻿@model IEnumerable<Cafeteria.Producto>
-
+<style>
+    body {
+        background-image: url('@Url.Content("~/Content/Images/Fondo_Productos.jpg")');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Administrador";
 }
 
-<h2>Index</h2>
+<h2 class="text-center">¡Bienvenido al modulo administrador!</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Agregar producto", "Create", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
+
+
+
+@using (Html.BeginForm("PorDetalleProducto", "Nombre", FormMethod.Get))
+{
+    <div class="d-flex mb-2">
+        <input class="form-control me-3" type="text" name="nombrebuscar" placeholder="Buscar" />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+        @Html.ActionLink("Ver todos", "Index", null, new { @class = "btn btn-success ms-3" })
+    </div>
+}
+
+<table class="table table-success table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -26,26 +48,31 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ingredientes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Seccion)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id_Producto }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id_Producto }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id_Producto })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ingredientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seccion)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id_Producto }, new { @class = "btn btn-warning" }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id_Producto }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id_Producto }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
+@if (!Model.Any())
+{
+    <p class="alert alert-warning">No se encontraron resultados</p>
+}
