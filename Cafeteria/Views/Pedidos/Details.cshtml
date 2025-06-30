@@ -1,0 +1,50 @@
+﻿@model Cafeteria.Pedido
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado_Producto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado_Producto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MetodoPago)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MetodoPago)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaPedido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaPedido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientesCafeteria.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientesCafeteria.Nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id_Pedido }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
