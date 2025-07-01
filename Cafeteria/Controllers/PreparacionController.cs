@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Cafeteria.Models; // Si tus modelos están ahí
-using Cafeteria; // Tu contexto de Entity Framework
+using Cafeteria.ViewModels;
+using Cafeteria.Models;
 
 namespace Cafeteria.Controllers
 {
@@ -20,17 +20,27 @@ namespace Cafeteria.Controllers
             using (var db = new cafeteriaEntities())
             {
                 var pedidos = db.Pedidos
+                    .Include("ClientesCafeteria")
+                    .Include("Productos_Pedido.Producto")
+                    .ToList()
                     .GroupBy(p => p.Id_Pedido)
-                    .Select(grupo => new PedidoAgrupadoViewModel
+                    .Select(grupo =>
                     {
-                        IdPedido = grupo.Key,
-                        NombreCliente = grupo.FirstOrDefault().ClientesCafeteria.Nombre,
-                        Estado = grupo.FirstOrDefault().Estado_Producto,
-                        Productos = grupo.FirstOrDefault().Productos_Pedido.Select(pp => new ProductoPedidoViewModel
+                        var primerPedido = grupo.FirstOrDefault();
+                        var clienteNombre = primerPedido?.ClientesCafeteria?.Nombre ?? "Desconocido";
+                        var estado = primerPedido?.Estado_Producto ?? "Pendiente";
+
+                        return new PedidoAgrupadoViewModel
                         {
-                            Nombre = pp.Producto.Nombre,
-                            Ingredientes = pp.Producto.Ingredientes
-                        }).ToList()
+                            IdPedido = grupo.Key,
+                            NombreCliente = clienteNombre,
+                            Estado = estado,
+                            Productos = grupo.Select(p => new ProductoPedidoViewModel
+                            {
+                                Nombre = p.Productos_Pedido.FirstOrDefault()?.Producto?.Nombre ?? "undefined",
+                                Ingredientes = p.Productos_Pedido.FirstOrDefault()?.Producto?.Ingredientes ?? "N/A"
+                            }).ToList()
+                        };
                     })
                     .ToList();
 
@@ -55,20 +65,5 @@ namespace Cafeteria.Controllers
 
             return RedirectToAction("Index");
         }
-    }
-
-    // ViewModels dentro del mismo archivo (por ahora)
-    public class PedidoAgrupadoViewModel
-    {
-        public int IdPedido { get; set; }
-        public string NombreCliente { get; set; }
-        public string Estado { get; set; }
-        public List<ProductoPedidoViewModel> Productos { get; set; }
-    }
-
-    public class ProductoPedidoViewModel
-    {
-        public string Nombre { get; set; }
-        public string Ingredientes { get; set; }
     }
 }

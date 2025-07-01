@@ -1,84 +1,82 @@
-﻿@model List<Cafeteria.Controllers.PedidoAgrupadoViewModel>
+﻿@model List<Cafeteria.ViewModels.PedidoAgrupadoViewModel>
 
 @{
-    ViewBag.Title = "Preparación y Entrega";
+    ViewBag.Title = "Preparación de Pedidos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mb-4">PREPARACIÓN Y ENTREGA</h2>
+<h2>Preparación de Pedidos</h2>
 
-<div style="display: flex; gap: 20px;">
-    <!-- Lista de Pedidos -->
-    <div style="width: 40%;">
+<div style="display: flex;">
+    <!-- Izquierda: Lista de botones por producto -->
+    <div style="width: 40%; padding: 10px;">
         @foreach (var pedido in Model)
         {
-            var colorFondo = pedido.Estado == "Preparación" ? "#facc15" : (pedido.Estado == "Entregado" ? "#4ade80" : "#f3f4f6");
-            var textoColor = pedido.Estado == "Preparación" ? "black" : "black";
-            <div class="pedido-btn" style="
-                    background-color:@colorFondo;
-                    padding:10px;
-                    border-radius:5px;
-                    margin-bottom:8px;
-                    cursor:pointer;
-                    color:@textoColor;
-                "
-                 onclick="mostrarProductos(@pedido.IdPedido)">
-                <strong>@pedido.NombreCliente</strong> - Pedido #@pedido.IdPedido
-            </div>
+            int index = 0;
+            foreach (var producto in pedido.Productos)
+            {
+                <button class="btn btn-primary btn-block pedido-btn"
+                        data-id="@pedido.IdPedido"
+                        data-nombre="@pedido.NombreCliente"
+                        data-producto="@producto.Nombre"
+                        data-ingredientes="@producto.Ingredientes"
+                        id="boton-@pedido.IdPedido-@index">
+                    Orden @pedido.IdPedido - @pedido.NombreCliente - @producto.Nombre
+                </button>
+                index++;
+            }
         }
     </div>
 
-    <!-- Detalle del Pedido Seleccionado -->
-    <div style="width: 60%;">
-        <h4>Productos:</h4>
-        <div id="productos-container" style="margin-top:10px;"></div>
+    <!-- Derecha: Detalles del producto -->
+    <div style="width: 60%; padding: 10px;">
+        <div id="detallePedido" style="display: none; border: 1px solid #ccc; padding: 10px;">
+            <h4 id="tituloProducto"></h4>
+            <p><strong>Ingredientes:</strong> <span id="ingredientesProducto"></span></p>
 
-        <div id="botones-cambio-estado" style="display: none; margin-top: 20px;">
-            <button class="btn btn-warning" onclick="cambiarEstado('Preparación')">Preparación</button>
-            <button class="btn btn-success" onclick="cambiarEstado('Entregado')">Entregar</button>
+            <button id="btnEntregar" class="btn btn-success">Entregado</button>
         </div>
     </div>
 </div>
 
-@section scripts {
+@section Scripts {
     <script>
-        let pedidos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
-        let pedidoSeleccionado = null;
+        let idPedidoSeleccionado = null;
+        let botonSeleccionado = null;
 
-        function mostrarProductos(idPedido) {
-            const pedido = pedidos.find(p => p.IdPedido === idPedido);
-            if (!pedido) return;
+        document.querySelectorAll('.pedido-btn').forEach(boton => {
+            boton.addEventListener('click', function () {
+                idPedidoSeleccionado = this.dataset.id;
+                botonSeleccionado = this;
 
-            pedidoSeleccionado = pedido;
-            const contenedor = document.getElementById('productos-container');
-            contenedor.innerHTML = '';
+                document.getElementById('tituloProducto').textContent = this.dataset.producto;
+                document.getElementById('ingredientesProducto').textContent = this.dataset.ingredientes;
 
-            pedido.Productos.forEach(p => {
-                const div = document.createElement('div');
-                div.style.marginBottom = '10px';
-                div.innerHTML = `<strong>${p.NombreProducto}</strong><br><small>${p.Ingredientes}</small>`;
-                contenedor.appendChild(div);
+                document.getElementById('detallePedido').style.display = 'block';
             });
+        });
 
-            document.getElementById('botones-cambio-estado').style.display = 'block';
-        }
-
-        function cambiarEstado(nuevoEstado) {
-            if (!pedidoSeleccionado) return;
+        document.getElementById('btnEntregar').addEventListener('click', function () {
+            if (!idPedidoSeleccionado || !botonSeleccionado) return;
 
             fetch('/Preparacion/CambiarEstado', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                body: JSON.stringify({ idPedido: pedidoSeleccionado.IdPedido, nuevoEstado })
-            }).then(response => {
-                if (response.ok) {
-                    location.reload(); // Refrescar la vista para ver el nuevo color
-                } else {
-                    alert('Error al actualizar el estado.');
-                }
-            });
-        }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `idPedido=${idPedidoSeleccionado}&nuevoEstado=Entregado`
+            })
+                .then(res => {
+                    if (res.ok) {
+                        botonSeleccionado.style.backgroundColor = '#a4f9a4'; // verde
+
+                        setTimeout(() => {
+                            botonSeleccionado.remove();
+                            document.getElementById('detallePedido').style.display = 'none';
+                        }, 3000);
+                    } else {
+                        alert("Error al cambiar el estado");
+                    }
+                })
+                .catch(err => alert("Error: " + err));
+        });
     </script>
 }

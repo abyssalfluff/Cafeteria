@@ -203,6 +203,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelCafeteria.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PedidoAgrupadoViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
