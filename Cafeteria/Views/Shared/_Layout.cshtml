@@ -26,7 +26,8 @@
                     <a class="nav-link" href="@Url.Action("Index", "Preparacion")">Preparación y Entrega</a>
 
                     <li>@Html.ActionLink("Clientes Cafeteria", "Index", "ClientesCafeteria", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Detalles Pedido", "Index", "Pedidos", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Pedidos", "Index", "Pedidos", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Productos Pedido", "Index", "Productos_Pedido", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Productos Pedido", "Index", "Productos_Pedido", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
