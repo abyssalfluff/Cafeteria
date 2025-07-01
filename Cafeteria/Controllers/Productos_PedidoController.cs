@@ -39,8 +39,21 @@ namespace Cafeteria.Controllers
         // GET: Productos_Pedido/Create
         public ActionResult Create()
         {
-            ViewBag.Id_Pedido = new SelectList(db.Pedidos, "Id_Pedido", "Estado_Producto");
-            ViewBag.Id_Producto = new SelectList(db.Productos, "Id_Producto", "Nombre");
+            ViewBag.Id_Pedido = db.Pedidos
+                .Include(p => p.ClientesCafeteria)
+                .ToList()
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id_Pedido.ToString(),
+                    Text = "Pedido #" + p.Id_Pedido + " - " + p.ClientesCafeteria.Nombre
+                });
+            ViewBag.Id_Producto = db.Productos
+                .ToList()
+                .Select(prod => new SelectListItem
+                {
+                    Value = prod.Id_Producto.ToString(),
+                    Text = prod.Nombre + " - ₡" + prod.Precio.ToString("N0")
+                });
             return View();
         }
 
@@ -57,9 +70,21 @@ namespace Cafeteria.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.Id_Pedido = new SelectList(db.Pedidos, "Id_Pedido", "Estado_Producto", productos_Pedido.Id_Pedido);
-            ViewBag.Id_Producto = new SelectList(db.Productos, "Id_Producto", "Nombre", productos_Pedido.Id_Producto);
+            ViewBag.Id_Pedido = db.Pedidos
+                .Include(p => p.ClientesCafeteria)
+                .ToList()
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id_Pedido.ToString(),
+                    Text = "Pedido #" + p.Id_Pedido + " - " + p.ClientesCafeteria.Nombre
+                });
+            ViewBag.Id_Producto = db.Productos
+                .ToList()
+                .Select(prod => new SelectListItem
+                {
+                    Value = prod.Id_Producto.ToString(),
+                    Text = prod.Nombre + " - ₡" + prod.Precio.ToString("N0")
+                });
             return View(productos_Pedido);
         }
 
@@ -75,8 +100,21 @@ namespace Cafeteria.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Id_Pedido = new SelectList(db.Pedidos, "Id_Pedido", "Estado_Producto", productos_Pedido.Id_Pedido);
-            ViewBag.Id_Producto = new SelectList(db.Productos, "Id_Producto", "Nombre", productos_Pedido.Id_Producto);
+            ViewBag.Id_Pedido = db.Pedidos
+                .Include(p => p.ClientesCafeteria)
+                .ToList()
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id_Pedido.ToString(),
+                    Text = "Pedido #" + p.Id_Pedido + " - " + p.ClientesCafeteria.Nombre
+                });
+            ViewBag.Id_Producto = db.Productos
+                .ToList()
+                .Select(prod => new SelectListItem
+                {
+                    Value = prod.Id_Producto.ToString(),
+                    Text = prod.Nombre + " - ₡" + prod.Precio.ToString("N0")
+                });
             return View(productos_Pedido);
         }
 
@@ -93,8 +131,21 @@ namespace Cafeteria.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Id_Pedido = new SelectList(db.Pedidos, "Id_Pedido", "Estado_Producto", productos_Pedido.Id_Pedido);
-            ViewBag.Id_Producto = new SelectList(db.Productos, "Id_Producto", "Nombre", productos_Pedido.Id_Producto);
+            ViewBag.Id_Pedido = db.Pedidos
+                .Include(p => p.ClientesCafeteria)
+                .ToList()
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id_Pedido.ToString(),
+                    Text = "Pedido #" + p.Id_Pedido + " - " + p.ClientesCafeteria.Nombre
+                });
+            ViewBag.Id_Producto = db.Productos
+                .ToList()
+                .Select(prod => new SelectListItem
+                {
+                    Value = prod.Id_Producto.ToString(),
+                    Text = prod.Nombre + " - ₡" + prod.Precio.ToString("N0")
+                });
             return View(productos_Pedido);
         }
 
