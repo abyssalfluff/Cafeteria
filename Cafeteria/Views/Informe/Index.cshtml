@@ -38,7 +38,7 @@
                 <td>@item.EstadoPedido</td>
                 <td>@item.NombreProducto</td>
                 <td>@item.Ingredientes</td>
-                <td>@item.Precio.ToString("C")</td>
+                <td>@item.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
                 <td>@item.Seccion</td>
             </tr>
         }
