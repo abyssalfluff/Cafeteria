@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Cafeteria.Producto>
+
+@{
+    ViewBag.Title = "Catálogo";
+}
+
+<h2>Catálogo de Productos</h2>
+
+<p>
+    @Html.ActionLink("Ver Carrito", "Index", "Carrito", null, new { @class = "btn btn-warning"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            ID de Producto
+        </th>
+        <th>
+            Producto
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredientes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Precio)
+        </th>
+        <th>
+            Sección
+        </th>
+        <th>
+            Acción
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id_Producto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ingredientes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Precio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Seccion)
+        </td>
+        <td>
+            @Html.ActionLink("Agregar al carrito", "Agregar", "Carrito", new { id = item.Id_Producto }, new { @class = "btn btn-success" })
+        </td>
+    </tr>
+}
+
+</table>
