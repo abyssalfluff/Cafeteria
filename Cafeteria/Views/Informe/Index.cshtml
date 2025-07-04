@@ -1,51 +1,46 @@
 ﻿@model IEnumerable<Cafeteria.Informe>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reporte";
 }
 
 <h2>Reporte</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.MetodoPago)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fecha)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Pedido.Estado_Producto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Producto.Nombre)
-        </th>
-        <th></th>
-    </tr>
+<style>
+    body {
+        background-image: url('/Content/Images/Fondo%20de%20Reporte.jpg'); /* Usa %20 para espacios */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MetodoPago)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pedido.Estado_Producto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
+<table class="table table-dark table-striped-columns">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Método de Pago</th>
+            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+            <th>Estado del Pedido</th>
+            <th>Nombre del producto</th>
+            <th>Ingredientes</th>
+            <th>Precio</th>
+            <th>Sección</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Pedido.ClientesCafeteria.Nombre</td>
+                <td>@item.MetodoPago</td>
+                <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@item.Pedido.Estado_Producto</td>
+                <td>@item.Producto.Nombre</td>
+                <td>@item.Producto.Ingredientes</td>
+                <td>@item.Producto.Precio.ToString("C")</td>
+                <td>@item.Producto.Seccion</td>
+            </tr>
+        }
+    </tbody>
 </table>
