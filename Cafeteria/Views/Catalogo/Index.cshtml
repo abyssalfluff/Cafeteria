@@ -4,54 +4,27 @@
     ViewBag.Title = "Catálogo";
 }
 
-<h2>Catálogo de Productos</h2>
+<h2 class="mb-4">Catálogo de Productos</h2>
 
-<p>
-    @Html.ActionLink("Ver Carrito", "Index", "Carrito", null, new { @class = "btn btn-primary"})
-</p>
-<table class="table">
-    <tr>
-        <th>
-            ID de Producto
-        </th>
-        <th>
-            Producto
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ingredientes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Precio)
-        </th>
-        <th>
-            Sección
-        </th>
-        <th>
-            Acción
-        </th>
-    </tr>
+<a href="@Url.Action("Index", "Carrito")" class="btn btn-primary mb-4">Ver Carrito</a>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id_Producto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ingredientes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Seccion)
-        </td>
-        <td>
-            @Html.ActionLink("Agregar al carrito", "Agregar", "Carrito", new { id = item.Id_Producto }, new { @class = "btn btn-success" })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">ID: @item.Id_Producto | Sección: @item.Seccion</h6>
+                    <p class="card-text mt-2">
+                        <strong>Ingredientes:</strong> @item.Ingredientes<br />
+                        <strong>Precio:</strong> ₡@item.Precio.ToString("N0")
+                    </p>
+                    <a href="@Url.Action("Agregar", "Carrito", new { id = item.Id_Producto })" class="btn btn-success mt-auto w-100">
+                        Agregar al carrito
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
