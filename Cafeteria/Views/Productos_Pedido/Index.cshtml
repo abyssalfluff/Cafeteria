@@ -1,37 +1,48 @@
 ﻿@model IEnumerable<Cafeteria.Productos_Pedido>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pedidos";
 }
 
-<h2>Index</h2>
+<h2>Productos de los Pedidos</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Pedido.Estado_Producto)
+            ID de Pedido
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Producto.Nombre)
+            Cliente
         </th>
-        <th></th>
+        <th>
+            Producto
+        </th>
+        <th>
+            Estado de Pedido
+        </th>
+        <th>
+            Acciones
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Pedido.Estado_Producto)
+            @Html.DisplayFor(modelItem => item.Pedido.Id_Pedido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pedido.ClientesCafeteria.Nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Producto.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.DisplayFor(modelItem => item.Pedido.Estado_Producto)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" }) |
+            @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }

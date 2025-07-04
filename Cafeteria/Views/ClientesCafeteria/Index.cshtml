@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<Cafeteria.ClientesCafeteria>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Clientes";
 }
 
-<h2>Index</h2>
+<h2>Registro de Clientes</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Añadir un cliente", "Create", null, new { @class = "btn btn-success" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Nombre)
+            Nombre del Cliente
         </th>
         <th></th>
     </tr>
@@ -23,9 +23,9 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id_Cliente }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id_Cliente }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id_Cliente })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id_Cliente }, new { @class = "btn btn-success" }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.Id_Cliente }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.Id_Cliente }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }

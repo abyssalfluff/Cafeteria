@@ -64,8 +64,8 @@
                 @Html.DisplayFor(modelItem => item.Seccion)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id_Producto }, new { @class = "btn btn-warning" }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.Id_Producto }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id_Producto }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id_Producto }, new { @class = "btn btn-primary" }) |
                 @Html.ActionLink("Borrar", "Delete", new { id = item.Id_Producto }, new { @class = "btn btn-danger" })
             </td>
         </tr>

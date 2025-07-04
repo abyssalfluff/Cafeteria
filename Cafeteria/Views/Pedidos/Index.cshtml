@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Cafeteria.Pedido>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pedidos";
 }
 
-<h2>Revisar pedidos existentes</h2>
+<h2>Pedidos realizados</h2>
 
 <table class="table">
     <tr>
@@ -46,9 +46,9 @@
             @Html.DisplayFor(modelItem => item.Estado_Producto)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id = item.Id_Pedido }) |
-            @Html.ActionLink("Detalles", "Details", new { id = item.Id_Pedido }) |
-            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id_Pedido })
+            @Html.ActionLink("Editar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-success" }) |
+            @Html.ActionLink("Detalles", "Details", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id_Pedido }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }

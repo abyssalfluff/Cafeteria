@@ -4,11 +4,13 @@
     ViewBag.Title = "Carrito";
 }
 
-<h2>Tu Carrito</h2>
+<h2>Carrito de Compras</h2>
 
 @if (!Model.Any())
 {
     <p>El carrito está vacío.</p>
+
+    <a href="@Url.Action("Index", "Catalogo")" class="btn btn-primary">Volver</a>
 }
 else
 {
@@ -60,8 +62,8 @@ else
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Finalizar Orden</button>
+        <button type="submit" class="btn btn-success mt-3">Finalizar Orden</button>
     }
-    <a href="@Url.Action("Index", "Catalogo")" class="btn btn-secondary" style="margin-top: 10px;">Seguir comprando</a>
+    <a href="@Url.Action("Index", "Catalogo")" class="btn btn-primary" style="margin-top: 10px;">Seguir comprando</a>
 
 }
