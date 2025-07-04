@@ -9,34 +9,27 @@
 @if (!Model.Any())
 {
     <p>El carrito está vacío.</p>
-
     <a href="@Url.Action("Index", "Catalogo")" class="btn btn-primary">Volver</a>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Ingredientes</th>
-                <th>Precio</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Nombre</td>
-                    <td>@item.Ingredientes</td>
-                    <td>₡@item.Precio</td>
-                    <td>
-                        @Html.ActionLink("Eliminar", "Eliminar", new { id = item.IdProducto }, new { @class = "btn btn-danger" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-6 col-12 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Nombre</h5>
+                        <p class="card-text">
+                            <strong>Ingredientes:</strong> @item.Ingredientes<br />
+                            <strong>Precio:</strong> ₡@item.Precio
+                        </p>
+                        <a href="@Url.Action("Eliminar", "Carrito", new { id = item.IdProducto })" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
     <hr />
     <h4>Total de la orden: <strong>₡@Model.Sum(p => p.Precio)</strong></h4>
@@ -54,7 +47,7 @@ else
             </datalist>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-3">
             <label for="metodoPago">Método de Pago:</label>
             <select id="metodoPago" name="metodoPago" class="form-control" required>
                 <option value="Efectivo">Efectivo</option>
@@ -62,8 +55,8 @@ else
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success mt-3">Finalizar Orden</button>
+        <button type="submit" class="btn btn-success mt-4">Finalizar Orden</button>
     }
-    <a href="@Url.Action("Index", "Catalogo")" class="btn btn-primary" style="margin-top: 10px;">Seguir comprando</a>
 
+    <a href="@Url.Action("Index", "Catalogo")" class="btn btn-primary mt-2">Seguir comprando</a>
 }
