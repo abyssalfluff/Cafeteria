@@ -205,7 +205,7 @@
       <DependentUpon>ModelCafeteria.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\CarritoItem.cs" />
-    <Compile Include="ViewModels\PedidoAgrupadoViewModel.cs" />
+    <Compile Include="ViewModels\ProductoIndividualViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -220,7 +220,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\PedidoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />

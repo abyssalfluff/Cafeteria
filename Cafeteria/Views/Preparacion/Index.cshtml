@@ -1,82 +1,84 @@
-﻿@model List<Cafeteria.ViewModels.PedidoAgrupadoViewModel>
-
+﻿@model List<Cafeteria.ViewModels.ProductoIndividualViewModel>
 @{
-    ViewBag.Title = "Preparación de Pedidos";
+    ViewBag.Title = "Vista de Preparación";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Preparación de Pedidos</h2>
 
-<div style="display: flex;">
-    <!-- Izquierda: Lista de botones por producto -->
-    <div style="width: 40%; padding: 10px;">
-        @foreach (var pedido in Model)
+<div class="row">
+    <div class="col-md-4">
+        @foreach (var producto in Model)
         {
-            int index = 0;
-            foreach (var producto in pedido.Productos)
-            {
-                <button class="btn btn-primary btn-block pedido-btn"
-                        data-id="@pedido.IdPedido"
-                        data-nombre="@pedido.NombreCliente"
-                        data-producto="@producto.Nombre"
-                        data-ingredientes="@producto.Ingredientes"
-                        id="boton-@pedido.IdPedido-@index">
-                    Orden @pedido.IdPedido - @pedido.NombreCliente - @producto.Nombre
-                </button>
-                index++;
-            }
+            string claseColor = "btn-default";
+            if (producto.Estado == "Preparación") { claseColor = "btn-warning"; }
+            else if (producto.Estado == "Entregado") { claseColor = "btn-success"; }
+
+            <button class="btn btn-block pedido-btn @claseColor"
+                    data-id="@producto.IdProductoPedido"
+                    data-pedido="@producto.IdPedido"
+                    data-cliente="@producto.NombreCliente"
+                    data-producto="@producto.NombreProducto"
+                    data-ingredientes="@producto.Ingredientes"
+                    onclick="mostrarDetalle(this)">
+                Orden #@producto.IdPedido - @producto.NombreCliente - @producto.NombreProducto
+            </button>
         }
     </div>
 
-    <!-- Derecha: Detalles del producto -->
-    <div style="width: 60%; padding: 10px;">
-        <div id="detallePedido" style="display: none; border: 1px solid #ccc; padding: 10px;">
-            <h4 id="tituloProducto"></h4>
-            <p><strong>Ingredientes:</strong> <span id="ingredientesProducto"></span></p>
+    <div class="col-md-8">
+        <h3>Detalle del Producto</h3>
+        <p><strong>Producto:</strong> <span id="detalleProducto"></span></p>
+        <p><strong>Ingredientes:</strong> <span id="detalleIngredientes"></span></p>
 
-            <button id="btnEntregar" class="btn btn-success">Entregado</button>
-        </div>
+        <form id="formPreparacion">
+            <input type="hidden" id="inputIdProductoPedido" />
+            <button type="button" class="btn btn-warning" onclick="cambiarEstado('Preparación')">Preparación</button>
+            <button type="button" class="btn btn-success" onclick="cambiarEstado('Entregado')">Entregado</button>
+        </form>
     </div>
 </div>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        let idPedidoSeleccionado = null;
         let botonSeleccionado = null;
 
-        document.querySelectorAll('.pedido-btn').forEach(boton => {
-            boton.addEventListener('click', function () {
-                idPedidoSeleccionado = this.dataset.id;
-                botonSeleccionado = this;
+        function mostrarDetalle(btn) {
+            botonSeleccionado = btn;
+            const nombre = btn.getAttribute("data-producto");
+            const ingredientes = btn.getAttribute("data-ingredientes");
+            const id = btn.getAttribute("data-id");
 
-                document.getElementById('tituloProducto').textContent = this.dataset.producto;
-                document.getElementById('ingredientesProducto').textContent = this.dataset.ingredientes;
+            document.getElementById("detalleProducto").innerText = nombre;
+            document.getElementById("detalleIngredientes").innerText = ingredientes;
+            document.getElementById("inputIdProductoPedido").value = id;
+        }
 
-                document.getElementById('detallePedido').style.display = 'block';
-            });
-        });
+        function cambiarEstado(nuevoEstado) {
+            const id = document.getElementById("inputIdProductoPedido").value;
+            if (!id) return;
 
-        document.getElementById('btnEntregar').addEventListener('click', function () {
-            if (!idPedidoSeleccionado || !botonSeleccionado) return;
-
-            fetch('/Preparacion/CambiarEstado', {
+            $.ajax({
+                url: '@Url.Action("CambiarEstado", "Preparacion")',
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `idPedido=${idPedidoSeleccionado}&nuevoEstado=Entregado`
-            })
-                .then(res => {
-                    if (res.ok) {
-                        botonSeleccionado.style.backgroundColor = '#a4f9a4'; // verde
+                data: { idProductoPedido: id, nuevoEstado: nuevoEstado },
+                success: function () {
+                    if (nuevoEstado === "Preparación") {
+                        botonSeleccionado.classList.remove("btn-default", "btn-success");
+                        botonSeleccionado.classList.add("btn-warning");
+                    } else if (nuevoEstado === "Entregado") {
+                        botonSeleccionado.classList.remove("btn-warning", "btn-default");
+                        botonSeleccionado.classList.add("btn-success");
 
                         setTimeout(() => {
                             botonSeleccionado.remove();
-                            document.getElementById('detallePedido').style.display = 'none';
+                            document.getElementById("detalleProducto").innerText = "";
+                            document.getElementById("detalleIngredientes").innerText = "";
                         }, 3000);
-                    } else {
-                        alert("Error al cambiar el estado");
                     }
-                })
-                .catch(err => alert("Error: " + err));
-        });
+                }
+            });
+        }
     </script>
 }

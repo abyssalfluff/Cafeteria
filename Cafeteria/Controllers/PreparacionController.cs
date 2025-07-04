@@ -1,69 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using Cafeteria;
+using Cafeteria.Models;
+using Cafeteria.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Cafeteria.ViewModels;
-using Cafeteria.Models;
 
-namespace Cafeteria.Controllers
+public class PreparacionController : Controller
 {
-    public class PreparacionController : Controller
+    public ActionResult Index()
     {
-        // GET: Preparacion
-        public ActionResult Index()
-        {
-            var pedidosAgrupados = ObtenerPedidosAgrupados();
-            return View(pedidosAgrupados);
-        }
+        var productos = ObtenerProductosPendientes();
+        return View(productos);
+    }
 
-        private List<PedidoAgrupadoViewModel> ObtenerPedidosAgrupados()
+    private List<ProductoIndividualViewModel> ObtenerProductosPendientes()
+    {
+        using (var db = new cafeteriaEntities())
         {
-            using (var db = new cafeteriaEntities())
-            {
-                var pedidos = db.Pedidos
-                    .Include("ClientesCafeteria")
-                    .Include("Productos_Pedido.Producto")
-                    .ToList()
-                    .GroupBy(p => p.Id_Pedido)
-                    .Select(grupo =>
-                    {
-                        var primerPedido = grupo.FirstOrDefault();
-                        var clienteNombre = primerPedido?.ClientesCafeteria?.Nombre ?? "Desconocido";
-                        var estado = primerPedido?.Estado_Producto ?? "Pendiente";
-
-                        return new PedidoAgrupadoViewModel
+            var query = from pp in db.Productos_Pedido
+                        join p in db.Pedidos on pp.Id_Pedido equals p.Id_Pedido
+                        join c in db.ClientesCafeterias on p.Id_Cliente equals c.Id_Cliente
+                        join prod in db.Productos on pp.Id_Producto equals prod.Id_Producto
+                        where p.Estado_Producto != "Entregado"
+                        select new ProductoIndividualViewModel
                         {
-                            IdPedido = grupo.Key,
-                            NombreCliente = clienteNombre,
-                            Estado = estado,
-                            Productos = grupo.Select(p => new ProductoPedidoViewModel
-                            {
-                                Nombre = p.Productos_Pedido.FirstOrDefault()?.Producto?.Nombre ?? "undefined",
-                                Ingredientes = p.Productos_Pedido.FirstOrDefault()?.Producto?.Ingredientes ?? "N/A"
-                            }).ToList()
+                            IdProductoPedido = pp.Id,
+                            IdPedido = p.Id_Pedido,
+                            NombreCliente = c.Nombre,
+                            NombreProducto = prod.Nombre,
+                            Ingredientes = prod.Ingredientes,
+                            Estado = p.Estado_Producto
                         };
-                    })
-                    .ToList();
 
-                return pedidos;
-            }
+            return query.ToList();
         }
+    }
 
-        [HttpPost]
-        public ActionResult CambiarEstado(int idPedido, string nuevoEstado)
+    [HttpPost]
+    public ActionResult CambiarEstado(int idProductoPedido, string nuevoEstado)
+    {
+        using (var db = new cafeteriaEntities())
         {
-            using (var db = new cafeteriaEntities())
+            var productoPedido = db.Productos_Pedido.FirstOrDefault(pp => pp.Id == idProductoPedido);
+            if (productoPedido != null)
             {
-                var productosDelPedido = db.Pedidos.Where(p => p.Id_Pedido == idPedido).ToList();
-
-                foreach (var producto in productosDelPedido)
+                var pedido = db.Pedidos.FirstOrDefault(p => p.Id_Pedido == productoPedido.Id_Pedido);
+                if (pedido != null)
                 {
-                    producto.Estado_Producto = nuevoEstado;
+                    pedido.Estado_Producto = nuevoEstado;
+                    db.SaveChanges();
                 }
-
-                db.SaveChanges();
             }
-
-            return RedirectToAction("Index");
         }
+        return new HttpStatusCodeResult(200);
     }
 }
