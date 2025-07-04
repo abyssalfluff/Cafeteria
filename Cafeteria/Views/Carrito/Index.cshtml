@@ -37,6 +37,7 @@ else
     </table>
 
     <hr />
+    <h4>Total de la orden: <strong>₡@Model.Sum(p => p.Precio)</strong></h4>
 
     using (Html.BeginForm("FinalizarPedido", "Carrito", FormMethod.Post))
     {

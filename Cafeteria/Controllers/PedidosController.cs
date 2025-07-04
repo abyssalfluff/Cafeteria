@@ -114,9 +114,22 @@ namespace Cafeteria.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // 1. Obtener el pedido
             Pedido pedido = db.Pedidos.Find(id);
+
+            // 2. Obtener los productos asociados a ese pedido
+            var productosAsociados = db.Productos_Pedido.Where(p => p.Id_Pedido == id).ToList();
+
+            // 3. Eliminar los productos primero (cascada manual)
+            foreach (var producto in productosAsociados)
+            {
+                db.Productos_Pedido.Remove(producto);
+            }
+
+            // 4. Luego eliminar el pedido
             db.Pedidos.Remove(pedido);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
