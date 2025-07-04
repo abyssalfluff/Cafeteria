@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Cafeteria.Informe>
+﻿@model IEnumerable<Cafeteria.ViewModels.ReporteViewModel>
 
 @{
     ViewBag.Title = "Reporte";
@@ -8,7 +8,7 @@
 
 <style>
     body {
-        background-image: url('/Content/Images/Fondo%20de%20Reporte.jpg'); /* Usa %20 para espacios */
+        background-image: url('/Content/Images/Fondo%20de%20Reporte.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -20,9 +20,9 @@
         <tr>
             <th>Cliente</th>
             <th>Método de Pago</th>
-            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+            <th>Fecha</th>
             <th>Estado del Pedido</th>
-            <th>Nombre del producto</th>
+            <th>Nombre del Producto</th>
             <th>Ingredientes</th>
             <th>Precio</th>
             <th>Sección</th>
@@ -32,14 +32,14 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Pedido.ClientesCafeteria.Nombre</td>
+                <td>@item.Cliente</td>
                 <td>@item.MetodoPago</td>
                 <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
-                <td>@item.Pedido.Estado_Producto</td>
-                <td>@item.Producto.Nombre</td>
-                <td>@item.Producto.Ingredientes</td>
-                <td>@item.Producto.Precio.ToString("C")</td>
-                <td>@item.Producto.Seccion</td>
+                <td>@item.EstadoPedido</td>
+                <td>@item.NombreProducto</td>
+                <td>@item.Ingredientes</td>
+                <td>@item.Precio.ToString("C")</td>
+                <td>@item.Seccion</td>
             </tr>
         }
     </tbody>

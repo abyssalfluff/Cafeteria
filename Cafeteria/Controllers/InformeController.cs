@@ -15,15 +15,25 @@ namespace Cafeteria.Controllers
         // GET: Informe
         public ActionResult Index()
         {
-            // Incluimos Cliente, Pedido y Producto con sus propiedades necesarias
-            var informes = db.Informes
+            var reportes = db.Informes
                 .Include(i => i.Pedido.ClientesCafeteria)
                 .Include(i => i.Producto)
                 .OrderByDescending(i => i.Fecha)
-                .ToList();
+                .Select(i => new Cafeteria.ViewModels.ReporteViewModel
+                {
+                    Cliente = i.Pedido.ClientesCafeteria.Nombre,
+                    MetodoPago = i.MetodoPago,
+                    Fecha = i.Fecha,
+                    EstadoPedido = i.Pedido.Estado_Producto,
+                    NombreProducto = i.Producto.Nombre,
+                    Ingredientes = i.Producto.Ingredientes,
+                    Precio = i.Producto.Precio,
+                    Seccion = i.Producto.Seccion
+                }).ToList();
 
-            return View(informes);
+            return View(reportes);
         }
+
 
         // GET: Informe/Create
         public ActionResult Create()
