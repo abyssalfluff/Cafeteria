@@ -15,6 +15,10 @@
         <AssociationConnector Association="cafeteriaModel.FK__Informe__Id_Prod__00200768" ManuallyRouted="false" />
         <AssociationConnector Association="cafeteriaModel.FK__Productos__Id_Pe__7A672E12" ManuallyRouted="false" />
         <AssociationConnector Association="cafeteriaModel.FK__Productos__Id_Pr__7B5B524B" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetRole" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetUserLogin" Width="1.5" PointX="8" PointY="7.875" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetUser" Width="1.5" PointX="5.75" PointY="7" />
+        <AssociationConnector Association="cafeteriaModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -170,6 +170,15 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>ModelCafeteria.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>ModelCafeteria.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogin.cs">
+      <DependentUpon>ModelCafeteria.tt</DependentUpon>
+    </Compile>
     <Compile Include="ClientesCafeteria.cs">
       <DependentUpon>ModelCafeteria.tt</DependentUpon>
     </Compile>

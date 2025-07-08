@@ -19,24 +19,28 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
 
                     <li>@Html.ActionLink("Administrador", "Index", "Productos", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li><a class="nav-link" href="@Url.Action("Index", "Preparacion")">Preparación y Entrega</a></li>
 
-                    <li>@Html.ActionLink("Clientes", "Index", "ClientesCafeteria", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pedidos
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="pedidosDropdown">
-                            <li><a class="dropdown-item" href="@Url.Action("Index", "Pedidos")">Revisar Pedidos</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Index", "Productos_Pedido")">Productos de Pedidos</a></li>
-                        </ul>
-                    </li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a class="nav-link" href="@Url.Action("Index", "Preparacion")">Preparación y Entrega</a></li>
+                        <li>@Html.ActionLink("Clientes", "Index", "ClientesCafeteria", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="pedidosDropdown">
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Pedidos")">Revisar Pedidos</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Productos_Pedido")">Productos de Pedidos</a></li>
+                            </ul>
+                        </li>
+
+                        <li>@Html.ActionLink("Reporte", "Index", "Informe", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                     <li>@Html.ActionLink("Catálogo", "Index", "Catalogo", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Reporte", "Index", "Informe", new { area = "" }, new { @class = "nav-link" })</li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -30,5 +30,8 @@ namespace Cafeteria
         public virtual DbSet<Pedido> Pedidos { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Productos_Pedido> Productos_Pedido { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
     }
 }
