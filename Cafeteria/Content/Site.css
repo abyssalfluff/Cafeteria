@@ -6,7 +6,7 @@
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+   will truncate terms that are too long to fit in the left column h
 */
 .dl-horizontal dt {
     white-space: normal;
