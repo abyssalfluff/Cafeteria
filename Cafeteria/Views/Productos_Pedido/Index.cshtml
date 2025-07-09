@@ -5,8 +5,15 @@
 }
 
 <h2>Productos de los Pedidos</h2>
-
-<table class="table table-striped table-hover table-bordered">
+@Html.ActionLink("Ver Todos", "Index", null, new { @class = "btn btn-secondary mb-3 me-2" })
+@using (Html.BeginForm("PorNombre", "Productos_Pedido", FormMethod.Get))
+{
+    <div class="mb-4 d-flex">
+        <input class="form-control me-2" type="text" name="search" placeholder="Buscar por producto o cliente..." />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+}
+<table class="table table-hover table-bordered">
     <tr>
         <th>
             ID de Pedido
@@ -25,26 +32,30 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pedido.Id_Pedido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pedido.ClientesCafeteria.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pedido.Estado_Producto)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" }) |
-            @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
-            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
-
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pedido.Id_Pedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pedido.ClientesCafeteria.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Producto.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pedido.Estado_Producto)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <p class="alert alert-warning">No se encontraron productos con ese nombre o cliente.</p>
+    }
 </table>

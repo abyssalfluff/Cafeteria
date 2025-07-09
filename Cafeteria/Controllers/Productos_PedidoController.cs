@@ -23,6 +23,20 @@ namespace Cafeteria.Controllers
             return View(productos_Pedido.ToList());
         }
 
+        [HttpGet]
+        [ActionName("PorNombre")]
+        public ActionResult PorNombre(string search)
+        {
+            var productos = db.Productos_Pedido
+                .Include(pp => pp.Producto)
+                .Include(pp => pp.Pedido.ClientesCafeteria)
+                .Where(pp => pp.Producto.Nombre.Contains(search) || pp.Pedido.ClientesCafeteria.Nombre.Contains(search))
+                .ToList();
+
+            ViewBag.CurrentFilter = search;
+            return View("Index", productos);
+        }
+
         // GET: Productos_Pedido/Details/5
         public ActionResult Details(int? id)
         {
