@@ -4,43 +4,98 @@
     ViewBag.Title = "Reporte";
 }
 
-<h2>Reporte</h2>
-
 <style>
     body {
-        background-image: url('/Content/Images/Fondo%20de%20Reporte.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        background-color: #f9f9f9;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
     }
+
+    .report-container {
+        max-width: 95%;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .report-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #eaeaea;
+        padding-bottom: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+
+    thead {
+        background-color: #f1f3f5;
+        color: #495057;
+    }
+
+        thead th {
+            text-align: left;
+            padding: 12px 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+    tbody tr {
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    tbody td {
+        padding: 12px 14px;
+        color: #333;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #fafafa;
+    }
+
+   
 </style>
 
-<table class="table table-dark table-striped-columns">
-    <thead>
-        <tr>
-            <th>Cliente</th>
-            <th>Método de Pago</th>
-            <th>Fecha</th>
-            <th>Estado del Pedido</th>
-            <th>Nombre del Producto</th>
-            <th>Ingredientes</th>
-            <th>Precio</th>
-            <th>Sección</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="report-container">
+    <div class="report-title">Reporte General de Pedidos</div>
+
+    <table>
+        <thead>
             <tr>
-                <td>@item.Cliente</td>
-                <td>@item.MetodoPago</td>
-                <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
-                <td>@item.EstadoPedido</td>
-                <td>@item.NombreProducto</td>
-                <td>@item.Ingredientes</td>
-                <td>@item.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
-                <td>@item.Seccion</td>
+                <th>Cliente</th>
+                <th>Método de Pago</th>
+                <th>Fecha</th>
+                <th>Estado del Pedido</th>
+                <th>Nombre del Producto</th>
+                <th>Ingredientes</th>
+                <th>Precio</th>
+                <th>Sección</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Cliente</td>
+                    <td>@item.MetodoPago</td>
+                    <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@item.EstadoPedido</td>
+                    <td>@item.NombreProducto</td>
+                    <td>@item.Ingredientes</td>
+                    <td>@item.Precio.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                    <td>@item.Seccion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
