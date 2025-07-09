@@ -21,10 +21,18 @@ namespace Cafeteria.Controllers
         {
             return View(db.Productos.ToList());
         }
-        public ActionResult PorDetalleProducto(string nombreBuscar)
+
+        [HttpGet]
+        [ActionName("PorDetalleProducto")]
+        public ActionResult BuscarPorDetalle(string nombreBuscar)
         {
-            var busca = db.Productos.Where(curso => curso.Nombre.Contains(nombreBuscar)).ToList();
-            return View("Index", busca);
+            var productos = db.Productos
+                              .Where(p => p.Nombre.Contains(nombreBuscar))
+                              .ToList();
+
+            ViewBag.CurrentFilter = nombreBuscar;
+
+            return View("Index", productos);
         }
 
 

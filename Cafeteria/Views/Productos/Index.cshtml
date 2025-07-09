@@ -22,7 +22,7 @@
 
 
 
-@using (Html.BeginForm("PorDetalleProducto", "Nombre", FormMethod.Get))
+@using (Html.BeginForm("PorDetalleProducto", "Productos", FormMethod.Get))
 {
     <div class="d-flex mb-2">
         <input class="form-control me-3" type="text" name="nombrebuscar" placeholder="Buscar" />
@@ -31,7 +31,7 @@
     </div>
 }
 
-<table class="table table-success table-striped">
+<table class="table table-success">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -74,5 +74,5 @@
 </table>
 @if (!Model.Any())
 {
-    <p class="alert alert-warning">No se encontraron resultados</p>
+    <p class="alert alert-warning">No se encontraron productos con ese nombre.</p>
 }
