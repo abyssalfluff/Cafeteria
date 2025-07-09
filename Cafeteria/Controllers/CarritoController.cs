@@ -81,7 +81,6 @@ namespace Cafeteria.Controllers
                 var pedido = new Pedido
                 {
                     Id_Cliente = cliente.Id_Cliente,
-                    MetodoPago = metodoPago,
                     Estado_Producto = "Pendiente",
                     FechaPedido = DateTime.Now
                 };

@@ -12,8 +12,14 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
+
     public class Productos_PedidoController : Controller
     {
+
+
+        public int Cantidad { get; set; }
+
+
         private cafeteriaEntities db = new cafeteriaEntities();
 
         // GET: Productos_Pedido
@@ -199,5 +205,6 @@ namespace Cafeteria.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

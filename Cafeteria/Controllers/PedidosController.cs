@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -12,8 +13,10 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
+
     public class PedidosController : Controller
     {
+
         private cafeteriaEntities db = new cafeteriaEntities();
 
         // GET: Pedidos
@@ -22,6 +25,8 @@ namespace Cafeteria.Controllers
             var pedidos = db.Pedidos.Include(p => p.ClientesCafeteria);
             return View(pedidos.ToList());
         }
+        
+
 
         [HttpGet]
         [ActionName("PorNombre")]
@@ -153,5 +158,97 @@ namespace Cafeteria.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // seccion cajero--------------------------------------------------------------------------
+
+        public ActionResult Cajero()
+        {
+            var pedidosData = db.Pedidos
+                .Include(p => p.ClientesCafeteria)
+                .Include(p => p.Productos_Pedido.Select(pp => pp.Producto)) // Incluye productos
+
+                .ToDictionary(
+                    p => p.Id_Pedido.ToString(), // Clave como string
+
+                    p => new {
+                        id = p.Id_Pedido,
+                        cliente = p.ClientesCafeteria?.Nombre,
+                        fecha = p.FechaPedido.ToShortDateString(),
+                        estado = p.Estado_Producto,
+                        metodoPago = p.MetodoPago,
+
+                        productos = p.Productos_Pedido
+                            .GroupBy(pp => pp.Producto.Id_Producto)
+                            .Select(grp => new {
+                                nombre = grp.First().Producto.Nombre,
+                                precio = grp.First().Producto.Precio,
+                                cantidad = grp.Count(), // ✅ cantidad calculada
+                                subtotal = grp.First().Producto.Precio * grp.Count()
+                            }).ToList()
+                    }
+                );
+
+            ViewBag.PedidosData = pedidosData;
+
+            return View(db.Pedidos.Include(p => p.ClientesCafeteria).ToList());
+        }
+        //botones -------------------
+
+
+        //(btn1)
+        //para actualizar el metodo de pago de forma de click desde la vista Cajero------------------------------------------------------------------------------- 
+        [HttpPost]
+        public ActionResult ActualizarMetodoPago(int id, string metodoPago)
+        {
+            //buscar por id en los pedidos 
+            var pedido = db.Pedidos.Find(id);
+            //si no existe el pedido, retornar error 404
+            if (pedido == null) return HttpNotFound();
+            //si el metodo de pago es nulo o vacio, retornar error 400
+            pedido.MetodoPago = metodoPago;
+            db.SaveChanges();
+            // retornar estado 200 OK
+            return new HttpStatusCodeResult(200);
+        }
+
+        //(btn2)
+        //se encarga de eliminar el pedido con un click de todas las tablas de forma de que si el usario desea no comprar al final se pueda eliminar sin que se quede en la base de datos y no se pueda volver a comprar el pedido-------------------------------------------------------------------------------
+        [HttpPost]
+        public ActionResult DeletePedido(int id)
+        {
+            try
+            {
+                // 1. Obtener el pedido
+                var pedido = db.Pedidos.Find(id);
+                if (pedido == null)
+                    return HttpNotFound("Pedido no encontrado.");
+
+                // 2. Eliminar productos relacionados
+                var productosAsociados = db.Productos_Pedido.Where(p => p.Id_Pedido == id).ToList();
+                if (productosAsociados.Any())
+                    db.Productos_Pedido.RemoveRange(productosAsociados);
+
+                // 3. Eliminar registros de Informe directamente con SQL
+                db.Database.ExecuteSqlCommand("DELETE FROM Informe WHERE Id_Pedido = @p0", id);
+
+                // 4. Eliminar el pedido
+                db.Pedidos.Remove(pedido);
+                db.SaveChanges();
+
+                return new HttpStatusCodeResult(200);
+            }
+            catch (DbUpdateException ex)
+            {
+                var inner = ex.InnerException?.InnerException?.Message ?? ex.Message;
+                return new HttpStatusCodeResult(500, "Error al eliminar el pedido: " + inner);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, "Error inesperado: " + ex.Message);
+            }
+        }
+        
+
+
     }
 }

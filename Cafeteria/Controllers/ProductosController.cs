@@ -14,6 +14,9 @@ namespace Cafeteria.Controllers
     [Authorize]
     public class ProductosController : Controller
     {
+        
+
+
         private cafeteriaEntities db = new cafeteriaEntities();
 
         // GET: Productos
