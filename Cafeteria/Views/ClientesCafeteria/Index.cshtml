@@ -7,9 +7,17 @@
 <h2 class="mb-4">Registro de Clientes</h2>
 
 <p>
-    @Html.ActionLink("Añadir un cliente", "Create", null, new { @class = "btn btn-success mb-4" })
+    @Html.ActionLink("Añadir un cliente", "Create", null, new { @class = "btn btn-success mb-2" })
 </p>
+@Html.ActionLink("Ver Todos", "Index", null, new { @class = "btn btn-secondary mb-3 me-2" })
 
+@using (Html.BeginForm("PorNombre", "ClientesCafeteria", FormMethod.Get))
+{
+    <div class="mb-4 d-flex">
+        <input class="form-control me-2" type="text" name="search" placeholder="Buscar cliente por nombre..." />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+}
 <div class="row">
     @foreach (var item in Model)
     {
@@ -27,5 +35,9 @@
                 </div>
             </div>
         </div>
+    }
+    @if (!Model.Any())
+    {
+        <p class="alert alert-warning">No se encontraron clientes con ese nombre.</p>
     }
 </div>

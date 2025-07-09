@@ -22,6 +22,16 @@ namespace Cafeteria.Controllers
             return View(db.ClientesCafeterias.ToList());
         }
 
+        [HttpGet]
+        [ActionName("PorNombre")]
+        public ActionResult PorNombre(string search)
+        {
+            var clientes = db.ClientesCafeterias.Where(c => c.Nombre.Contains(search)).ToList();
+
+            ViewBag.CurrentFilter = search;
+            return View("Index", clientes);
+        }
+
         // GET: ClientesCafeteria/Details/5
         public ActionResult Details(int? id)
         {
