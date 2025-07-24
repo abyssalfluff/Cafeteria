@@ -1,4 +1,4 @@
-#Cafetería Institucional
+##Cafetería Institucional
 
 Este proyecto es una aplicación web desarrollada en **ASP.NET con C#** para gestionar las operaciones de una cafetería institucional. Está diseñado para facilitar el control de ventas, productos, usuarios y reportes en un entorno administrativo eficiente y moderno.
 
