@@ -1,8 +1,8 @@
-##Cafetería Institucional
+# ☕ Cafetería Institucional - Sistema Web
 
 Este proyecto es una aplicación web desarrollada en **ASP.NET con C#** para gestionar las operaciones de una cafetería institucional. Está diseñado para facilitar el control de ventas, productos, usuarios y reportes en un entorno administrativo eficiente y moderno.
 
-#Características principales
+## 🚀 Características principales
 
 - 🧾 Gestión de productos: agregar, editar, eliminar y visualizar inventario.
 - 👥 Administración de usuarios: roles, permisos y autenticación.
@@ -11,7 +11,7 @@ Este proyecto es una aplicación web desarrollada en **ASP.NET con C#** para ges
 - 🎨 Interfaz responsiva: diseño adaptado con **Bootstrap** y Razor Views.
 - 🔐 Seguridad: autenticación y autorización basada en roles.
 
-#🛠️ Tecnologías utilizadas
+## 🛠️ Tecnologías utilizadas
 
 | Tecnología     | Propósito                          |
 |----------------|------------------------------------|
@@ -23,13 +23,29 @@ Este proyecto es una aplicación web desarrollada en **ASP.NET con C#** para ges
 | SQL Server     | Base de datos relacional           |
 | Entity Framework | ORM para acceso a datos          |
 
-#📦 Instalación y configuración
+## 📦 Instalación y configuración
 
-Requisitos previos
+### Requisitos previos
 
 - Visual Studio 2022 o superior
 - .NET SDK 6.0 o superior
 - SQL Server (Express o completo)
+
+### Pasos para ejecutar el proyecto
+
+```bash
+# Clona el repositorio
+git clone https://github.com/tu-usuario/cafeteria-institucional.git
+
+# Abre el proyecto en Visual Studio
+# Restaura los paquetes NuGet
+# Configura la cadena de conexión en appsettings.json
+
+# Ejecuta migraciones (si usas EF Core)
+Update-Database
+
+# Ejecuta la aplicación
+Ctrl + F5
 
 
 # Clona el repositorio (link)
