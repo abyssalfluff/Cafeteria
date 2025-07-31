@@ -1,33 +1,122 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Inicio - Cafetería CTP Carrizal";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<!-- Animate.css y Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+@Html.Raw(@"<style>
+    body {
+        background: linear-gradient(-45deg, #fdf6ec, #fff0f5, #fffaf0, #ffe4e1);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes textGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>")
+
+<style>
+    .hero {
+        background: linear-gradient(135deg, #fffaf0, #ffe4e1);
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        background: linear-gradient(90deg, #ff7e5f, #feb47b, #ff7e5f);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textGradient 5s ease infinite;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border-radius: 25px;
+        padding: 2rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+        .glass-card:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+    .highlight {
+        font-size: 1.2rem;
+        color: #7a7575;
+        font-style: italic;
+    }
+
+    .btn-fancy {
+        background: linear-gradient(45deg, #ffb347, #ffcc33);
+        color: #fff;
+        border: none;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        transition: transform 0.2s ease;
+    }
+
+        .btn-fancy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            color: white;
+        }
+</style>
+
+<main class="container py-5">
+
+    <!-- HERO -->
+    <div class="hero text-center animate__animated animate__fadeInDown">
+        <h1 class="hero-title animate__animated animate__pulse animate__delay-1s">Cafetería CTP Carrizal</h1>
+        <p class="lead fst-italic text-muted mb-4">Organización de Operaciones y Servicios de A&B</p>
+        <p class="highlight">¡Donde cada sabor cuenta una historia!</p>
+        <a class="btn btn-lg btn-fancy mt-4 shadow-sm" href="/Catalogo">
+            <i class="bi bi-cup-hot me-2"></i> Realizar pedido
+        </a>
+    </div>
+
+    <!-- SERVICIOS CON ESTILO -->
+    <div class="row mt-5 text-center">
+        <div class="col-md-4 mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="glass-card">
+                <i class="bi bi-cup-straw fs-1 text-primary mb-3"></i>
+                <h5 class="fw-bold text-dark">Bebidas</h5>
+                <p class="text-muted">Explorá nuestra variedad de frescos, batidos y cafés artesanales.</p>
+                <a href="/Catalogo" class="btn btn-outline-primary mt-3">Ver más</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+            <div class="glass-card">
+                <i class="bi bi-egg-fried fs-1 text-warning mb-3"></i>
+                <h5 class="fw-bold text-dark">Alimentos</h5>
+                <p class="text-muted">Disfrutá de opciones calientes, repostería, snacks y panadería del día.</p>
+                <a href="/Catalogo" class="btn btn-outline-warning mt-3">Ver más</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 animate__animated animate__fadeInUp animate__delay-3s">
+            <div class="glass-card">
+                <i class="bi bi-stars fs-1 text-success mb-3"></i>
+                <h5 class="fw-bold text-dark">Experiencia</h5>
+                <p class="text-muted">Atención estudiantil de calidad en un ambiente acogedor y profesional.</p>
+                <a href="/Catalogo" class="btn btn-outline-success mt-3">Ver más</a>
+            </div>
+        </div>
     </div>
 </main>

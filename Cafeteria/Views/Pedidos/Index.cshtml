@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Cafeteria.Pedido>
+
+@{
+    ViewBag.Title = "Pedidos";
+}
+
+<h2>Pedidos realizados</h2>
+@Html.ActionLink("Ver Todos", "Index", null, new { @class = "btn btn-secondary mb-3 me-2" })
+
+@using (Html.BeginForm("PorNombre", "Pedidos", FormMethod.Get))
+{
+    <div class="mb-4 d-flex">
+        <input class="form-control me-2" type="text" name="search" placeholder="Buscar por nombre del cliente..." />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+}
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>
+            ID del Pedido
+        </th>
+        <th>
+            Cliente
+        </th>
+        <th>
+            Fecha del Pedido
+        </th>
+        <th>
+            Método de Pago
+        </th>
+        <th>
+            Estado de Pedido
+        </th>
+        <th>
+            Acciones
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_Pedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClientesCafeteria.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetodoPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado_Producto)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.Id_Pedido }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <p class="alert alert-warning">No se encontraron pedidos con ese nombre.</p>
+    }
+</table>

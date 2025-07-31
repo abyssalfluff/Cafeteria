@@ -1,0 +1,84 @@
+﻿@model List<Cafeteria.ViewModels.ProductoIndividualViewModel>
+@{
+    ViewBag.Title = "Vista de Preparación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Preparación de Pedidos</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        @foreach (var producto in Model)
+        {
+            string claseColor = "btn-default";
+            if (producto.Estado == "Preparación") { claseColor = "btn-warning"; }
+            else if (producto.Estado == "Entregado") { claseColor = "btn-success"; }
+
+            <button class="btn btn-block pedido-btn @claseColor"
+                    data-id="@producto.IdProductoPedido"
+                    data-pedido="@producto.IdPedido"
+                    data-cliente="@producto.NombreCliente"
+                    data-producto="@producto.NombreProducto"
+                    data-ingredientes="@producto.Ingredientes"
+                    onclick="mostrarDetalle(this)">
+                Orden #@producto.IdPedido - @producto.NombreCliente - @producto.NombreProducto
+            </button>
+        }
+    </div>
+
+    <div class="col-md-8">
+        <h3>Detalle del Producto</h3>
+        <p><strong>Producto:</strong> <span id="detalleProducto"></span></p>
+        <p><strong>Ingredientes:</strong> <span id="detalleIngredientes"></span></p>
+
+        <form id="formPreparacion">
+            <input type="hidden" id="inputIdProductoPedido" />
+            <button type="button" class="btn btn-warning" onclick="cambiarEstado('Preparación')">Preparación</button>
+            <button type="button" class="btn btn-success" onclick="cambiarEstado('Entregado')">Entregado</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let botonSeleccionado = null;
+
+        function mostrarDetalle(btn) {
+            botonSeleccionado = btn;
+            const nombre = btn.getAttribute("data-producto");
+            const ingredientes = btn.getAttribute("data-ingredientes");
+            const id = btn.getAttribute("data-id");
+
+            document.getElementById("detalleProducto").innerText = nombre;
+            document.getElementById("detalleIngredientes").innerText = ingredientes;
+            document.getElementById("inputIdProductoPedido").value = id;
+        }
+
+        function cambiarEstado(nuevoEstado) {
+            const id = document.getElementById("inputIdProductoPedido").value;
+            if (!id) return;
+
+            $.ajax({
+                url: '@Url.Action("CambiarEstado", "Preparacion")',
+                method: 'POST',
+                data: { idProductoPedido: id, nuevoEstado: nuevoEstado },
+                success: function () {
+                    if (nuevoEstado === "Preparación") {
+                        botonSeleccionado.classList.remove("btn-default", "btn-success");
+                        botonSeleccionado.classList.add("btn-warning");
+                    } else if (nuevoEstado === "Entregado") {
+                        botonSeleccionado.classList.remove("btn-warning", "btn-default");
+                        botonSeleccionado.classList.add("btn-success");
+
+                        setTimeout(() => {
+                            botonSeleccionado.remove();
+                            document.getElementById("detalleProducto").innerText = "";
+                            document.getElementById("detalleIngredientes").innerText = "";
+                        }, 3000);
+                    }
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model Cafeteria.Productos_Pedido
+
+@{
+    ViewBag.Title = "Pedidos";
+}
+
+<h2>Eliminar producto del pedido</h2>
+
+<h3>Está seguro que desea realizar esto?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            ID de Pedido
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id_Pedido)
+        </dd>
+
+        <dt>
+            Cliente
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pedido.ClientesCafeteria.Nombre)
+        </dd>
+
+        <dt>
+            Producto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.Nombre)
+        </dd>
+
+        <dt>
+            Estado de Pedido
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pedido.Estado_Producto)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Cafeteria.Producto>
+<style>
+    body {
+        background-image: url('@Url.Content("~/Content/Images/Fondo_Productos.jpg")');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>
+@{
+    ViewBag.Title = "Administrador";
+}
+
+<h2 class="text-center">¡Bienvenido al modulo administrador!</h2>
+
+<p>
+    @Html.ActionLink("Agregar producto", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+
+
+@using (Html.BeginForm("PorDetalleProducto", "Productos", FormMethod.Get))
+{
+    <div class="d-flex mb-2">
+        <input class="form-control me-3" type="text" name="nombrebuscar" placeholder="Buscar por nombre de producto..." />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+        @Html.ActionLink("Ver todos", "Index", null, new { @class = "btn btn-success ms-3" })
+    </div>
+}
+
+<table class="table table-success">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredientes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Precio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Seccion)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ingredientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seccion)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id_Producto }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id_Producto }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id_Producto }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+@if (!Model.Any())
+{
+    <p class="alert alert-warning">No se encontraron productos con ese nombre.</p>
+}

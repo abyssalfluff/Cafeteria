@@ -1,0 +1,66 @@
+﻿@model Cafeteria.Producto
+<style>
+    body {
+        background-image: url('@Url.Content("~/Content/Images/Fondo_Productos.jpg")');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar Producto</h2>
+
+<h3>¿Estas seguro de eliminar este producto?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredientes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ingredientes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seccion)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

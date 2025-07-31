@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="07d3edf3041947c38f9692ad59faaa02" Name="Diagram1" ZoomLevel="115">
+        <EntityTypeShape EntityType="cafeteriaModel.ClientesCafeteria" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="cafeteriaModel.Informe" Width="1.5" PointX="12.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="cafeteriaModel.Pedido" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="cafeteriaModel.Producto" Width="1.5" PointX="10" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="cafeteriaModel.Productos_Pedido" Width="2" PointX="12.25" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="cafeteriaModel.FK__Pedidos__Id_Clie__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="cafeteriaModel.FK__Informe__Id_Pedi__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="cafeteriaModel.FK__Informe__Id_Prod__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="cafeteriaModel.FK__Productos__Id_Pe__7A672E12" ManuallyRouted="false" />
+        <AssociationConnector Association="cafeteriaModel.FK__Productos__Id_Pr__7B5B524B" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetRole" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetUserLogin" Width="1.5" PointX="8" PointY="7.875" />
+        <EntityTypeShape EntityType="cafeteriaModel.AspNetUser" Width="1.5" PointX="5.75" PointY="7" />
+        <AssociationConnector Association="cafeteriaModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,156 @@
+﻿@model IEnumerable<Cafeteria.Pedido>
+@using System.Web.Helpers
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Cajero.css">
+</head>
+<body>
+    <div class="contenedor">
+
+        <!-- Panel izquierdo: Pedidos -->
+        <div class="left-panel">
+            <h2 class="titulo1">Pedidos</h2>
+            @foreach (var pedido in Model.OrderByDescending(p => p.FechaPedido))
+            {
+                <div class="pedido-item" id="pedido-@pedido.Id_Pedido" onclick="mostrarProductos(@pedido.Id_Pedido)">
+                    <h4>Pedido #@pedido.Id_Pedido</h4>
+                    <p>Cliente: @pedido.ClientesCafeteria.Nombre</p>
+                    <p>Fecha: @pedido.FechaPedido.ToShortDateString()</p>
+                </div>
+            }
+        </div>
+
+        <!-- Panel derecho: Productos -->
+        <div class="right-panel">
+            <h2 class="titulo1">Detalles</h2>
+            <div id="productosContainer" class="producto-list">
+                <h3 class="mensaje_de_espera"> Selecciona un pedido para ver sus productos</h3>
+            </div>
+        </div>
+
+        <!-- Datos embebidos en JavaScript -->
+        <script>
+            const pedidosData = @Html.Raw(Json.Encode(ViewBag.PedidosData));
+
+
+
+            function mostrarProductos(idPedido) {
+                const container = document.getElementById("productosContainer");
+                const pedido = pedidosData[idPedido];
+
+                if (!pedido) {
+                    container.innerHTML = "<p class='alert alert-danger'>Pedido no encontrado.</p>";
+                    return;
+                }
+
+                let html = `<div class="factura-container">
+        <h3 class="factura-titulo">Factura del Pedido #${pedido.id}</h3>
+        <div class="factura-info">
+            <p><strong>Cliente:</strong> ${pedido.cliente}</p>
+            <p><strong>Fecha:</strong> ${pedido.fecha}</p>
+            <p><strong>Estado:</strong> ${pedido.estado}</p>
+            <p><strong>Método de Pago:</strong> ${pedido.metodoPago}</p>
+        </div>
+        <h4 class="factura-subtitulo">Detalle de Productos:</h4>`;
+
+                if (!pedido.productos || pedido.productos.length === 0) {
+                    html += `<p class="factura-vacio">No hay productos registrados para este pedido.</p>`;
+                } else {
+                    html += `<table class="factura-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+                    let total = 0;
+                    pedido.productos.forEach(prod => {
+                        html += `<tr>
+                <td>${prod.nombre}</td>
+                <td>₡${prod.precio.toFixed(2)}</td>
+                <td>${prod.cantidad}</td>
+                <td>₡${prod.subtotal.toFixed(2)}</td>
+            </tr>`;
+                        total += prod.subtotal;
+                    });
+
+                    html += `</tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td><strong>₡${total.toFixed(2)}</strong></td>
+                </tr>
+            </tfoot>
+        </table>`;
+                }
+
+                html += `
+        <div class="factura-buttons">
+            <button class="btn-sinpe" onclick="procesarPago(${pedido.id}, 'Sinpe')">Pagar con Sinpe</button>
+            <button class="btn-efectivo" onclick="procesarPago(${pedido.id}, 'Efectivo')">Pagar en Efectivo</button>
+            <button class="btn-eliminar" onclick="eliminarPedido(${pedido.id})">Eliminar pedido</button>
+        </div>
+    </div>`;
+
+                container.innerHTML = html;
+            }
+
+            function procesarPago(idPedido, metodo) {
+                fetch('/Pedidos/ActualizarMetodoPago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `id=${idPedido}&metodoPago=${encodeURIComponent(metodo)}`
+                }).then(response => {
+                    if (!response.ok) {
+                        alert("Error al actualizar el método de pago.");
+                        return;
+                    }
+
+                    pedidosData[idPedido].metodoPago = metodo;
+
+                    const pedidoElement = document.getElementById(`pedido-${idPedido}`);
+                    if (pedidoElement) pedidoElement.remove();
+
+                    const container = document.getElementById("productosContainer");
+                    container.innerHTML = `<p class="alert alert-success">Pedido #${idPedido} procesado con método: ${metodo}</p>`;
+                });
+            }
+
+            function eliminarPedido(idPedido) {
+                if (!confirm(`¿Eliminar el pedido #${idPedido}?`)) return;
+
+                fetch('/Pedidos/DeletePedido', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `id=${idPedido}`
+                }).then(response => {
+                    if (!response.ok) {
+                        alert("Error al eliminar el pedido.");
+                        return;
+                    }
+
+                    delete pedidosData[idPedido];
+
+                    const pedidoElement = document.getElementById(`pedido-${idPedido}`);
+                    if (pedidoElement) pedidoElement.remove();
+
+                    const container = document.getElementById("productosContainer");
+                    container.innerHTML = `<p class="alert alert-warning">Pedido #${idPedido} eliminado.</p>`;
+                });
+
+            }
+        </script>
+    </div>
+</body>
+</html>
