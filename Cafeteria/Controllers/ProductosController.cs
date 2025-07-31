@@ -11,7 +11,7 @@ using Cafeteria;
 
 namespace Cafeteria.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Administrador")]
     public class ProductosController : Controller
     {
         

@@ -12,6 +12,7 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ClientesCafeteriaController : Controller
     {
         private cafeteriaEntities db = new cafeteriaEntities();

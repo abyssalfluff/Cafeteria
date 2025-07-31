@@ -8,6 +8,7 @@ using Cafeteria;
 
 namespace Cafeteria.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class InformeController : Controller
     {
         private cafeteriaEntities db = new cafeteriaEntities();

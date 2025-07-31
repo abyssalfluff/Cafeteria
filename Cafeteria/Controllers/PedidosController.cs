@@ -13,7 +13,7 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
-
+    [Authorize(Roles = "Administrador,Cajero")]
     public class PedidosController : Controller
     {
 
@@ -160,7 +160,6 @@ namespace Cafeteria.Controllers
         }
 
         // seccion cajero--------------------------------------------------------------------------
-
         public ActionResult Cajero()
         {
             var pedidosData = db.Pedidos

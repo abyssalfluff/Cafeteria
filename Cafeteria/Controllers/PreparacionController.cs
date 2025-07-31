@@ -4,10 +4,10 @@ using Cafeteria.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using EntityState = System.Data.Entity.EntityState; 
+using EntityState = System.Data.Entity.EntityState;
 
 
-
+[Authorize(Roles = "Administrador,Cocinero")]
 public class PreparacionController : Controller
 {
     public ActionResult Index()
