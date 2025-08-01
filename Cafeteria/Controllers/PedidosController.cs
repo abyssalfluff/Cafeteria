@@ -13,7 +13,7 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
-    //[Authorize(Roles = "Administrador,Cajero")]
+    [Authorize(Roles = "Administrador,Cajero")]
     public class PedidosController : Controller
     {
 
