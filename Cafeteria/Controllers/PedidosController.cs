@@ -13,7 +13,7 @@ using EntityState = System.Data.Entity.EntityState; // ✅
 
 namespace Cafeteria.Controllers
 {
-    [Authorize(Roles = "Administrador,Cajero")]
+    //[Authorize(Roles = "Administrador,Cajero")]
     public class PedidosController : Controller
     {
 
@@ -162,14 +162,14 @@ namespace Cafeteria.Controllers
         // seccion cajero--------------------------------------------------------------------------
         public ActionResult Cajero()
         {
-            var pedidosData = db.Pedidos
+            var pedidosSinPago = db.Pedidos
+                .Where(p => string.IsNullOrEmpty(p.MetodoPago)) // 🔍 Filtra pedidos sin método de pago
                 .Include(p => p.ClientesCafeteria)
-                .Include(p => p.Productos_Pedido.Select(pp => pp.Producto)) // Incluye productos
-
+                .Include(p => p.Productos_Pedido.Select(pp => pp.Producto))
                 .ToDictionary(
-                    p => p.Id_Pedido.ToString(), // Clave como string
-
-                    p => new {
+                    p => p.Id_Pedido.ToString(),
+                    p => new
+                    {
                         id = p.Id_Pedido,
                         cliente = p.ClientesCafeteria?.Nombre,
                         fecha = p.FechaPedido.ToShortDateString(),
@@ -178,18 +178,23 @@ namespace Cafeteria.Controllers
 
                         productos = p.Productos_Pedido
                             .GroupBy(pp => pp.Producto.Id_Producto)
-                            .Select(grp => new {
+                            .Select(grp => new
+                            {
                                 nombre = grp.First().Producto.Nombre,
                                 precio = grp.First().Producto.Precio,
-                                cantidad = grp.Count(), // ✅ cantidad calculada
+                                cantidad = grp.Count(),
                                 subtotal = grp.First().Producto.Precio * grp.Count()
                             }).ToList()
                     }
                 );
 
-            ViewBag.PedidosData = pedidosData;
+            ViewBag.PedidosData = pedidosSinPago;
 
-            return View(db.Pedidos.Include(p => p.ClientesCafeteria).ToList());
+            // También filtra la lista que se pasa directamente a la vista
+            return View(db.Pedidos
+                .Where(p => string.IsNullOrEmpty(p.MetodoPago))
+                .Include(p => p.ClientesCafeteria)
+             .ToList());
         }
         //botones -------------------
 

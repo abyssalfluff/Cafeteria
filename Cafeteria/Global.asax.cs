@@ -49,7 +49,7 @@ namespace Cafeteria
             {
                 userManager.AddToRole(admin.Id, "Administrador");
             }
-            var cajero = userManager.FindByEmail("cajero@gmail.com");
+            var cajero = userManager.FindByEmail("Cajero@gmail.com");
             if (cajero != null && !userManager.IsInRole(cajero.Id, "Cajero"))
             {
                 userManager.AddToRole(cajero.Id, "Cajero");
